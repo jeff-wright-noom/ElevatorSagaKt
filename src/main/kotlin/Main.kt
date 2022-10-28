@@ -3,30 +3,20 @@
 class ElevatorCallbacks {
   @JsName("init")
   fun init(elevators: Array<Elevator>, floors: Array<Floor>) {
+    numFloors = floors.size
 
-    val elevator = elevators.first()
-    elevator.on(ElevatorEvent.IDLE) {
-      if(elevator.loadFactor() == 0f) {
-        elevator.goToFloor(lowestPressedFloor())
-      }
-      elevator.getPressedFloors()
-        .firstOrNull()
-        ?.let {
-          elevator.goToFloor(it)
-        }
-    }
-
-    elevator.on1(ElevatorEvent.STOPPED_AT_FLOOR) { floorNum: Int ->
-      floorStates[floorNum to UPDOWN.UP] = false
-      floorStates[floorNum to UPDOWN.DOWN] = false
+    elevators.mapIndexed { idx, el ->
+      SmartElevator(el)
     }
 
     floors.forEach { floor ->
       floor.on(FloorEvent.UP_BUTTON_PRESSED) {
-        floorStates[floor.floorNum() to UPDOWN.UP] = true
+        floorsWithWaiters.add(floor.floorNum())
+        //floorStates[floor.floorNum() to UPDOWN.UP] = true
       }
       floor.on(FloorEvent.DOWN_BUTTON_PRESSED) {
-        floorStates[floor.floorNum() to UPDOWN.DOWN] = true
+        floorsWithWaiters.add(floor.floorNum())
+        //floorStates[floor.floorNum() to UPDOWN.DOWN] = true
       }
     }
   }

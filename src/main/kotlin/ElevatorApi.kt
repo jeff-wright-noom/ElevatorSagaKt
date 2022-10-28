@@ -1,7 +1,9 @@
-external class Elevator {
+external interface Elevator {
   fun on(event: String, handler: () -> Unit)
   @JsName("on")
   fun <T> on1(event: String, handler: (T) -> Unit)
+  @JsName("on")
+  fun <T, U> on2(event: String, handler: (T, U) -> Unit)
 
   /**
    * Queue the elevator to go to specified floor number. If you specify true as second argument, the elevator will go to that floor directly, and then go to any other queued floors.
@@ -55,7 +57,7 @@ external class Elevator {
   /**
    * The current destination queue, meaning the floor numbers the elevator is scheduled to go to. Can be modified and emptied if desired. Note that you need to call checkDestinationQueue() for the change to take effect immediately.
    */
-  val destinationQueue: Array<Int>
+  var destinationQueue: Array<Int>
 
   /**
    * Checks the destination queue for any new destinations to go to. Note that you only need to call this if you modify the destination queue explicitly.
