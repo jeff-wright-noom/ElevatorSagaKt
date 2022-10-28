@@ -1,0 +1,12 @@
+build/
+.idea/
+out/
+.idea_modules/
+*.class
+*.log
+hs_err_pid*
+replay_pid*
+.gradle/
+.idea/
+kotlin-js-store/yarn.lock
+.DS_Store
